@@ -1,0 +1,56 @@
+<!--
+  ~ Copyright 2018 The app Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="Данные" >
+        <ListPreference
+            android:defaultValue="true"
+            app:defaultValue="true"
+            app:entries="@array/reply_entries_course"
+            app:entryValues="@array/reply_values_course"
+            app:key="reply"
+            app:title="@string/reply_title_course"
+            app:useSimpleSummaryProvider="true" />
+
+        <ListPreference
+            app:defaultValue="true"
+            android:defaultValue="true"
+            app:entries="@array/reply_entries_group"
+            app:entryValues="@array/reply_values_group"
+            app:key="reply_group"
+            app:title="@string/reply_title_group"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="Дизайн">
+
+        <SwitchPreferenceCompat
+            app:key="sync"
+            app:title="@string/sync_title" />
+<!--
+        <SwitchPreferenceCompat
+        app:dependency="sync"
+        app:key="attachment"
+        app:summaryOff="@string/attachment_summary_off"
+        app:summaryOn="@string/attachment_summary_on"
+        app:title="@string/attachment_title" />-->
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
