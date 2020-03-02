@@ -1,18 +1,26 @@
 package com.example.main_app_2;
 
+import android.annotation.TargetApi;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
+@TargetApi(26)
 public class SettingsActivity extends AppCompatActivity {
 
+    public static int tempCourse;
+    public static int tempGroup;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.settings_activity);
         getSupportFragmentManager()
                 .beginTransaction()
@@ -28,11 +36,23 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
+
+
+    @TargetApi(26)
     public static class SettingsFragment extends PreferenceFragmentCompat {
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
+            try {
+                ListPreference listPreference = findPreference("prefCourse");
+                listPreference.setValue(String.valueOf(DataBase.course));
+                listPreference = findPreference("prefGroup");
+                listPreference.setValue(String.valueOf(DataBase.group));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+
     }
 
     @Override
@@ -45,4 +65,24 @@ public class SettingsActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    private static Preference.OnPreferenceChangeListener listener = new Preference.OnPreferenceChangeListener() {
+        @Override
+        public boolean onPreferenceChange(Preference preference, Object newValue) {
+
+            String value = newValue.toString();
+            if(preference instanceof ListPreference)
+            {
+                ListPreference listPreference = (ListPreference)preference;
+
+                if(listPreference.getKey().equals("prefCourse")){
+                    tempCourse = Integer.parseInt(value);
+                }
+                if(listPreference.getKey().equals("prefGroup")){
+                    tempGroup = Integer.parseInt(value);
+                }
+            }
+            return true;
+        }
+    };
 }

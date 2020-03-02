@@ -74,16 +74,16 @@ public class MainActivity extends AppCompatActivity implements Datable{
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
        // Toast.makeText(getApplicationContext(), item.getTitle() + "has been pushed", Toast.LENGTH_LONG).show();
-        switch(item.getItemId())
+        switch(item.getOrder())
         {
-            case 0:
+            case 1:
             {
                 DataBase.data = Requester.makeRequest();
                 TextView lastUpdate = findViewById(R.id.updateTextView);
                 lastUpdate.setText(Requester.lastDateViewText);
                 break;
             }
-            case 1:
+            case 2:
             {
                 Intent intent = new Intent(this,SettingsActivity.class);
                 startActivity(intent);
