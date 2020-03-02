@@ -2,6 +2,7 @@ package com.example.main_app_2;
 
 import android.annotation.TargetApi;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ public class SettingsActivity extends AppCompatActivity {
                 .commit();
         Toolbar toolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
+
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle("Настройки");
@@ -55,12 +57,21 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
 
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.settings_option_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.finish();
                 return true;
+            case R.id.menu_save_button:
+                Toast.makeText(getApplicationContext(),"menu save button was pressed",Toast.LENGTH_LONG).show();
             default:
                 return super.onOptionsItemSelected(item);
         }
