@@ -55,10 +55,10 @@ public class SettingsActivity extends AppCompatActivity {
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
             try {
                 ListPreference listPreference = findPreference("prefCourse");
-                listPreference.setValue(String.valueOf(DataBase.course));
+                listPreference.setValue(String.valueOf(DataBase.getCourse()));
                 listPreference.setOnPreferenceChangeListener(listener);
                 listPreference = findPreference("prefGroup");
-                listPreference.setValue(String.valueOf(DataBase.group));
+                listPreference.setValue(String.valueOf(DataBase.getGroup()));
                 listPreference.setOnPreferenceChangeListener(listener);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -81,14 +81,17 @@ public class SettingsActivity extends AppCompatActivity {
                 this.finish();
                 return true;
             case R.id.menu_save_button:
-                if(tempCourse!=DataBase.course || tempGroup!=DataBase.group)
+                if(tempCourse!=DataBase.getCourse() || tempGroup!=DataBase.getGroup())
                 {
+                    if(tempGroup == 0)
+                        tempGroup = DataBase.getGroup();
+                    if(tempCourse == 0)
+                        tempCourse = DataBase.getCourse();
                     Map<DayOfWeek, List<Lesson>>data = Requester.makeRequest(tempCourse,tempGroup);
                     if(data!=null)
                     {
                         DataBase.data = data;
-                        DataBase.group = tempGroup;
-                        DataBase.course = tempCourse;
+                        DataBase.setCourseAndGroupInfo(tempCourse,tempGroup);
                         Fragments.fragmentsUpdate();
                         Toast.makeText(getApplicationContext(),"Данные изменены",
                                 Toast.LENGTH_SHORT).show();

@@ -1,11 +1,4 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="myCustomMenuTextAppearance" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
-        <item name="android:textColor">@android:color/primary_text_dark</item>
-        <item name="android:color">@color/colorWhite</item>
-        <item name="android:background">@color/colorPrimary</item>
-        <item tools:targetApi="21" name="android:strokeColor">@color/colorWhite</item>
-        <item tools:targetApi="21" name="android:strokeWidth">10.0</item>
-    </style>
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
@@ -14,6 +7,7 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -21,6 +15,7 @@
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark" >
         <item name="android:background">@color/colorPrimary</item>
+        <item name="android:actionMenuTextColor">@color/colorWhite</item>
         <!--<item tools:targetApi="24" name="android:listMenuViewStyle">@style/myCustomMenuTextAppearance</item>
         <item name="android:gestureStrokeWidth">4.0</item>
         <item tools:targetApi="24" name="android:strokeColor">@color/colorWhite</item>-->
