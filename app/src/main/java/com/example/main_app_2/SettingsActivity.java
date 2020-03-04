@@ -12,6 +12,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.SwitchPreferenceCompat;
 
 @TargetApi(26)
 public class SettingsActivity extends AppCompatActivity {
@@ -48,8 +49,10 @@ public class SettingsActivity extends AppCompatActivity {
             try {
                 ListPreference listPreference = findPreference("prefCourse");
                 listPreference.setValue(String.valueOf(DataBase.course));
+                listPreference.setOnPreferenceChangeListener(listener);
                 listPreference = findPreference("prefGroup");
                 listPreference.setValue(String.valueOf(DataBase.group));
+                listPreference.setOnPreferenceChangeListener(listener);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -92,6 +95,10 @@ public class SettingsActivity extends AppCompatActivity {
                 if(listPreference.getKey().equals("prefGroup")){
                     tempGroup = Integer.parseInt(value);
                 }
+            }
+            if(preference instanceof SwitchPreferenceCompat)
+            {
+
             }
             return true;
         }

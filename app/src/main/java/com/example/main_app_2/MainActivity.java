@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements Datable{
         tabs.setupWithViewPager(viewPager);
         Instant instant = Instant.now();
 
+
         if(DataBase.data == null)
             startCustomDialog();
         Requester.textView = findViewById(R.id.updateTextView);
