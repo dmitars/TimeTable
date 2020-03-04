@@ -68,15 +68,11 @@ public class CustomDialogFragment extends DialogFragment {
                        group = Integer.parseInt((((EditText) root.findViewById(R.id.group_id)).getText().toString()));
                        DataBase.course = course;
                        DataBase.group = group;
-                       DataBase.data = Requester.makeRequest();
+                       DataBase.data = Requester.makeRequest(group,course);
                        if(DataBase.data == null)
                            throw new Exception();
                        datable.setGroupAndCourseInfo(group,course);
-                       for(SwipeRefreshLayout.OnRefreshListener fragment:Fragments.fragments)
-                       {
-                           if(fragment!=null)
-                               fragment.onRefresh();
-                       }
+                       Fragments.fragmentsUpdate();
                        d.dismiss();
                    } catch (Exception e) {
                        Toast.makeText(getContext(), "Нет такой группы", Toast.LENGTH_LONG).show();

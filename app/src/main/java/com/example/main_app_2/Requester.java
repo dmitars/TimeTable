@@ -39,11 +39,11 @@ public class Requester {
 
     public static String lastDateViewText = "";
     static ZoneId zone;
-    public static Map<DayOfWeek, List<Lesson>> makeRequest(){
+    public static Map<DayOfWeek, List<Lesson>> makeRequest(int course, int group){
 
         Map<DayOfWeek, List<Lesson>> answ = new HashMap<DayOfWeek, List<Lesson>>(); //= null;
         /*try {
-            answ = new SocketRequestTask().execute(DataBase.course, DataBase.group).get();
+            answ = new SocketRequestTask().execute(course, group).get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

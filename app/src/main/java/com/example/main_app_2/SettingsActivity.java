@@ -2,6 +2,7 @@ package com.example.main_app_2;
 
 import android.annotation.TargetApi;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -13,6 +14,12 @@ import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreferenceCompat;
+
+import com.example.main_app_2.integratedClasses.DayOfWeek;
+import com.example.main_app_2.integratedClasses.Lesson;
+
+import java.util.List;
+import java.util.Map;
 
 @TargetApi(26)
 public class SettingsActivity extends AppCompatActivity {
@@ -74,7 +81,22 @@ public class SettingsActivity extends AppCompatActivity {
                 this.finish();
                 return true;
             case R.id.menu_save_button:
-                Toast.makeText(getApplicationContext(),"menu save button was pressed",Toast.LENGTH_LONG).show();
+                if(tempCourse!=DataBase.course || tempGroup!=DataBase.group)
+                {
+                    Map<DayOfWeek, List<Lesson>>data = Requester.makeRequest(tempCourse,tempGroup);
+                    if(data!=null)
+                    {
+                        DataBase.data = data;
+                        DataBase.group = tempGroup;
+                        DataBase.course = tempCourse;
+                        Fragments.fragmentsUpdate();
+                        Toast.makeText(getApplicationContext(),"Данные изменены",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+
+                /*Toast.makeText(getApplicationContext(),"menu save button was pressed",Toast.LENGTH_LONG).show();*/
             default:
                 return super.onOptionsItemSelected(item);
         }

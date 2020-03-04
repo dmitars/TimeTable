@@ -145,7 +145,7 @@ public class WednesdayTab extends Fragment implements SwipeRefreshLayout.OnRefre
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Map<DayOfWeek, List<Lesson>> data = Requester.makeRequest();
+                Map<DayOfWeek, List<Lesson>> data = Requester.makeRequest(DataBase.group,DataBase.course);
                 if(data == null)
                     Toast.makeText(getContext(), "Ошибка соединения; попробуйте позже", Toast.LENGTH_LONG).show();
                 else {

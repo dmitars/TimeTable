@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements Datable{
         {
             case 1:
             {
-                DataBase.data = Requester.makeRequest();
+                DataBase.data = Requester.makeRequest(DataBase.course,DataBase.group);
                 TextView lastUpdate = findViewById(R.id.updateTextView);
                 lastUpdate.setText(Requester.lastDateViewText);
                 break;
