@@ -24,7 +24,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 
 
-public class MainActivity extends AppCompatActivity implements Datable{
+public class MainActivity extends AppCompatActivity{
     @Override
     @TargetApi(26)
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements Datable{
         {
             case 1:
             {
-                DataBase.data = Requester.makeRequest(DataBase.course,DataBase.group);
+                DataBase.data = Requester.makeRequest(DataBase.getCourse(),DataBase.getGroup());
                 TextView lastUpdate = findViewById(R.id.updateTextView);
                 lastUpdate.setText(Requester.lastDateViewText);
                 break;
@@ -116,9 +116,4 @@ public class MainActivity extends AppCompatActivity implements Datable{
 
     }
 
-    @Override
-    public void setGroupAndCourseInfo(int group, int course) {
-       DataBase.group = group;
-       DataBase.course = course;
-    }
 }

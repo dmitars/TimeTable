@@ -8,7 +8,20 @@ import java.util.List;
 import java.util.Map;
 
 public class DataBase {
-    public static int course;
-    public static int group;
+    private static int course;
+    private static int group;
     public static Map<DayOfWeek, List<Lesson>>data;
+
+    public static void setCourseAndGroupInfo(int aCourse, int aGroup){
+        course = aCourse;
+        group = aGroup;
+    }
+
+    public static int getCourse() {
+        return course;
+    }
+
+    public static int getGroup() {
+        return group;
+    }
 }

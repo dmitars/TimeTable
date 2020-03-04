@@ -20,7 +20,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import java.util.ArrayList;
 
 public class CustomDialogFragment extends DialogFragment {
-    private Datable  datable;
     private View root;
     private ArrayList<Integer> numberOfGroups;
 
@@ -48,7 +47,6 @@ public class CustomDialogFragment extends DialogFragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        datable = (Datable) context;
     }
 
     @Override
@@ -66,12 +64,10 @@ public class CustomDialogFragment extends DialogFragment {
                    try {
                        course = Integer.parseInt((((EditText) root.findViewById(R.id.course_id)).getText().toString()));
                        group = Integer.parseInt((((EditText) root.findViewById(R.id.group_id)).getText().toString()));
-                       DataBase.course = course;
-                       DataBase.group = group;
-                       DataBase.data = Requester.makeRequest(group,course);
+                       DataBase.setCourseAndGroupInfo(course,group);
+                       DataBase.data = Requester.makeRequest(course,group);
                        if(DataBase.data == null)
                            throw new Exception();
-                       datable.setGroupAndCourseInfo(group,course);
                        Fragments.fragmentsUpdate();
                        d.dismiss();
                    } catch (Exception e) {
