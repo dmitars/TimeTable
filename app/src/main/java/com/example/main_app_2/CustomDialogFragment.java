@@ -21,8 +21,8 @@ import java.util.ArrayList;
 
 public class CustomDialogFragment extends DialogFragment {
     private Datable  datable;
-    View root;
-    ArrayList<Integer> numberOfGroups;
+    private View root;
+    private ArrayList<Integer> numberOfGroups;
 
     @NonNull
     @Override
@@ -58,7 +58,7 @@ public class CustomDialogFragment extends DialogFragment {
         final AlertDialog d = (AlertDialog)getDialog();
         if(d != null)
         {
-            Button positiveButton = (Button) d.getButton(Dialog.BUTTON_POSITIVE);
+            Button positiveButton = d.getButton(Dialog.BUTTON_POSITIVE);
             positiveButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
