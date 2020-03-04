@@ -1,4 +1,4 @@
-package com.example.main_app_2;
+package com.example.main_app_2.Network;
 import com.example.main_app_2.integratedClasses.*;
 
 import android.annotation.TargetApi;
@@ -12,7 +12,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 @TargetApi(26)
 public class Requester {
@@ -39,6 +38,12 @@ public class Requester {
 
     public static String lastDateViewText = "";
     static ZoneId zone;
+
+
+    public static void setZone(ZoneId zone) {
+        Requester.zone = zone;
+    }
+
     public static Map<DayOfWeek, List<Lesson>> makeRequest(int course, int group){
 
         Map<DayOfWeek, List<Lesson>> answ = new HashMap<DayOfWeek, List<Lesson>>(); //= null;

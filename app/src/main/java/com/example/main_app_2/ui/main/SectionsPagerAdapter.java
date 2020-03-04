@@ -3,12 +3,16 @@ package com.example.main_app_2.ui.main;
 import android.content.Context;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.example.main_app_2.*;
+import com.example.main_app_2.DayTabs.FridayTab;
+import com.example.main_app_2.DayTabs.MondayTab;
+import com.example.main_app_2.DayTabs.SaturdayTab;
+import com.example.main_app_2.DayTabs.ThursdayTab;
+import com.example.main_app_2.DayTabs.TuesdayTab;
+import com.example.main_app_2.DayTabs.WednesdayTab;
 
 
 /**

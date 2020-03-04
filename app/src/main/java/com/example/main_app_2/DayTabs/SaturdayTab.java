@@ -1,4 +1,4 @@
-package com.example.main_app_2;
+package com.example.main_app_2.DayTabs;
 
 
 import android.os.Bundle;
@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
+import com.example.main_app_2.R;
 
 public class SaturdayTab extends Fragment{
 WebView webView;

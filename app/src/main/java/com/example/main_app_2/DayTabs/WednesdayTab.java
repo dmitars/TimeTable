@@ -1,11 +1,10 @@
-package com.example.main_app_2;
+package com.example.main_app_2.DayTabs;
 
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +17,14 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.main_app_2.SystemClasses.DataBase;
+import com.example.main_app_2.SystemClasses.Fragments;
+import com.example.main_app_2.R;
+import com.example.main_app_2.Network.Requester;
 import com.example.main_app_2.integratedClasses.DayOfWeek;
 import com.example.main_app_2.integratedClasses.Lesson;
 
 
-import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalTime;
 import java.util.Map;

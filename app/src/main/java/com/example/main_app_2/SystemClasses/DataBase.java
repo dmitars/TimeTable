@@ -1,4 +1,4 @@
-package com.example.main_app_2;
+package com.example.main_app_2.SystemClasses;
 
 import com.example.main_app_2.integratedClasses.DayOfWeek;
 import com.example.main_app_2.integratedClasses.Lesson;

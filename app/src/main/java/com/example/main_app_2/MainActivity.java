@@ -12,6 +12,8 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.main_app_2.Network.Requester;
+import com.example.main_app_2.SystemClasses.DataBase;
 import com.google.android.material.tabs.TabLayout;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,9 +31,7 @@ public class MainActivity extends AppCompatActivity{
     @TargetApi(26)
     protected void onCreate(Bundle savedInstanceState) {
         ZoneId zoneId = ZoneId.of( "Europe/Moscow" );
-
-        Requester.zone = zoneId;
-
+        Requester.setZone(zoneId);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity{
         TabLayout tabs = findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
         Instant instant = Instant.now();
-
 
         if(DataBase.data == null)
             startCustomDialog();

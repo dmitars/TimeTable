@@ -1,4 +1,4 @@
-package com.example.main_app_2;
+package com.example.main_app_2.DayTabs;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,6 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.example.main_app_2.R;
 
 import java.util.ArrayList;
 

@@ -3,7 +3,6 @@ package com.example.main_app_2;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +14,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.example.main_app_2.Network.Requester;
+import com.example.main_app_2.SystemClasses.DataBase;
+import com.example.main_app_2.SystemClasses.Fragments;
 
 import java.util.ArrayList;
 

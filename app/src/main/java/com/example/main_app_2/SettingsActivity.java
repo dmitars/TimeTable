@@ -2,7 +2,6 @@ package com.example.main_app_2;
 
 import android.annotation.TargetApi;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -15,6 +14,9 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreferenceCompat;
 
+import com.example.main_app_2.Network.Requester;
+import com.example.main_app_2.SystemClasses.DataBase;
+import com.example.main_app_2.SystemClasses.Fragments;
 import com.example.main_app_2.integratedClasses.DayOfWeek;
 import com.example.main_app_2.integratedClasses.Lesson;
 
