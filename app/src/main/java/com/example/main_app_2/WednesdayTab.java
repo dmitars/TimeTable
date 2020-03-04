@@ -22,7 +22,7 @@ import com.example.main_app_2.integratedClasses.DayOfWeek;
 import com.example.main_app_2.integratedClasses.Lesson;
 
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalTime;
 import java.util.Map;
@@ -62,9 +62,12 @@ public class WednesdayTab extends Fragment implements SwipeRefreshLayout.OnRefre
 
         ltInflater = getLayoutInflater();
 
-        generateData();
+        if(DataBase.data!=null)
+            generateData();
+        Fragments.fragments.add(this);
         return root;
     }
+
 
     @TargetApi(26)
     View getLeftItem(boolean isWindow, Lesson lesson){
