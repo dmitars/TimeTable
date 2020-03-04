@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.ArrayList;
 
@@ -71,6 +72,11 @@ public class CustomDialogFragment extends DialogFragment {
                        if(DataBase.data == null)
                            throw new Exception();
                        datable.setGroupAndCourseInfo(group,course);
+                       for(SwipeRefreshLayout.OnRefreshListener fragment:Fragments.fragments)
+                       {
+                           if(fragment!=null)
+                               fragment.onRefresh();
+                       }
                        d.dismiss();
                    } catch (Exception e) {
                        Toast.makeText(getContext(), "Нет такой группы", Toast.LENGTH_LONG).show();
