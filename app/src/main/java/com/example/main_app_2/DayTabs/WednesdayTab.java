@@ -2,7 +2,6 @@ package com.example.main_app_2.DayTabs;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -12,39 +11,35 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.main_app_2.R;
 import com.example.main_app_2.SystemClasses.DataBase;
 import com.example.main_app_2.SystemClasses.Fragments;
-import com.example.main_app_2.R;
-import com.example.main_app_2.Network.Requester;
+import com.example.main_app_2.consts.Const;
+import com.example.main_app_2.data_classes.Lesson;
+import com.example.main_app_2.data_classes.PartOfDay;
+import com.example.main_app_2.data_classes.RestTime;
 import com.example.main_app_2.integratedClasses.DayOfWeek;
-import com.example.main_app_2.integratedClasses.Lesson;
+import com.example.main_app_2.integratedClasses.PartOfDayDisplay;
 
-
-import java.util.List;
 import java.time.LocalTime;
-import java.util.Map;
-import java.util.Optional;
+import java.util.List;
 
 @TargetApi(26)
 public class WednesdayTab extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
-    int size;
     int dayId;
     LayoutInflater ltInflater;
     LinearLayout rightLayout;
     LinearLayout leftLayout;
-    LocalTime localTime;
-    LocalTime maxWindow = LocalTime.of(0,35);
+    PartOfDayDisplay partOfDayDisplay;
 
     SwipeRefreshLayout swipeRefreshLayout;
-
     Context mainContext;
-    public WednesdayTab(Context context, int position)
-    {
+
+    public WednesdayTab(Context context, int position){
         dayId = position;
         mainContext = context;
     }
@@ -54,108 +49,61 @@ public class WednesdayTab extends Fragment implements SwipeRefreshLayout.OnRefre
             @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.wednesday, container, false);
-        TextView textView = root.findViewById(R.id.Title);
-        textView.setText("Среда");
+        TextView textView = root.findViewById(R.id.titleView);
+        textView.setText(DayOfWeek.values()[dayId].name());
         rightLayout = root.findViewById(R.id.rightLayout);
         leftLayout = root.findViewById(R.id.leftLayout);
 
-        swipeRefreshLayout=root.findViewById(R.id.swipe_layout);
+        swipeRefreshLayout = root.findViewById(R.id.swipe_layout);
         swipeRefreshLayout.setOnRefreshListener(this);
 
         ltInflater = getLayoutInflater();
+        partOfDayDisplay
+                = new PartOfDayDisplay(ltInflater,leftLayout,rightLayout);
 
-        if(DataBase.data!=null)
+        if(!DataBase.isNotLoaded())
             generateData();
         Fragments.fragments.add(this);
         return root;
     }
 
-
-    @TargetApi(26)
-    View getLeftItem(boolean isWindow, Lesson lesson){
-        View item = ltInflater.inflate(R.layout.left_item, leftLayout, false);
-        TextView textFirst =  item.findViewById(R.id.timeBegin);
-        TextView textSecond = item.findViewById(R.id.timeEnd);
-
-        if(!isWindow)
-        {
-            textFirst.setText(lesson.getStart().toString());
-            textSecond.setText(lesson.getStart()
-                    .plusMinutes(lesson.getLengthInMinutes()).toString());
-        }
-        else
-        {
-            textFirst.setText(localTime.toString());
-            textSecond.setText(lesson.getStart().toString());
-        }
-        item.setBackgroundResource(R.drawable.back_left);
-        return item;
-    }
-
-    @TargetApi(26)
-    View getRightItem(Optional<Lesson> lesson){
-        View item = ltInflater.inflate(R.layout.item, rightLayout, false);
-        TextView textView1 =  item.findViewById(R.id.tvName);
-        TextView tvPosition =  item.findViewById(R.id.tvPosition);
-        TextView tvSalary =  item.findViewById(R.id.tvSalary);
-        if(lesson.isPresent())
-        {
-            textView1.setText(lesson.get().getName());
-            tvPosition.setText("К. "+lesson.get().getRoom());
-            tvSalary.setText(lesson.get().getTeacher());
-            item.setBackgroundResource(R.drawable.back);
-        }
-        else
-        {
-            textView1.setText("Перерыв");
-            tvPosition.setText("");
-            tvSalary.setText("");
-            item.setBackgroundColor(Color.parseColor("#808080"));
-        }
-        return item;
-    }
-
     private void generateData(){
-        List<Lesson>lessons = DataBase.data.get(DayOfWeek.values()[dayId]);
-        size = lessons.size();
-        localTime = lessons.get(0).getStart();
-        for(int i = 0;i<size;i++)
+        List<Lesson>lessons = DataBase.getLessonsOfDay(dayId);
+        if(lessons.size() == 0)
+            return;
+        LocalTime endTimeOfPrevious = lessons.get(0).getStartTime();
+        for(Lesson lesson:lessons)
         {
-            if(lessons.get(i).getStart().toSecondOfDay() - localTime.toSecondOfDay()
-                    > maxWindow.toSecondOfDay())
-            {
-                View item = getRightItem(Optional.<Lesson>empty());
-                rightLayout.addView(item);
-
-                item = getLeftItem(true,lessons.get(i));
-                leftLayout.addView(item);
-            }
-            {
-                View item = getRightItem(Optional.of(lessons.get(i)));
-                rightLayout.addView(item);
-            }
-            {
-                View item = getLeftItem(false,lessons.get(i));
-                leftLayout.addView(item);
-            }
-            localTime = lessons.get(i).getStart().plusMinutes(lessons.get(i).getLengthInMinutes());
+            int interval = lesson.getStartTime().toSecondOfDay() - endTimeOfPrevious.toSecondOfDay();
+            if(interval > Const.MAX_WINDOW.toSecondOfDay())
+                insertRest(endTimeOfPrevious,interval);
+            partOfDayDisplay.showPartOfDay(lesson);
+            endTimeOfPrevious = lesson.getEndOfPart();
         }
     }
+
+    private void insertRest(LocalTime startTime, int intervalInSeconds){
+        int intervalInMinutes = intervalInSeconds % 60;
+        PartOfDay rest = new RestTime(getString(R.string.rest_time_title),
+                startTime,intervalInMinutes);
+        partOfDayDisplay.showPartOfDay(rest);
+    }
+
 
     @Override
     public void onRefresh() {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Map<DayOfWeek, List<Lesson>> data = Requester.makeRequest(DataBase.getCourse(),DataBase.getGroup());
-                if(data == null)
-                    Toast.makeText(getContext(), "Ошибка соединения; попробуйте позже", Toast.LENGTH_LONG).show();
-                else {
+                try{
+                    DataBase.refresh(getContext());
                     leftLayout.removeAllViews();
                     rightLayout.removeAllViews();
-                    DataBase.data = data;
                     generateData();
                     swipeRefreshLayout.setRefreshing(false);
+                } catch (Exception e) {
+                    Toast.makeText(getContext(), e.getLocalizedMessage(),
+                            Toast.LENGTH_LONG).show();
                 }
             }
         },400);
