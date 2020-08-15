@@ -16,16 +16,13 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.main_app_2.R;
 import com.example.main_app_2.SystemClasses.DataBase;
 import com.example.main_app_2.SystemClasses.Fragments;
-import com.example.main_app_2.integratedClasses.PartOfDayDisplay;
 
 @TargetApi(26)
-public class WednesdayTab extends Fragment implements SwipeRefreshLayout.OnRefreshListener,
-                                                                                    TabConfigure{
+public class WednesdayTab extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
     int dayId;
-    PartOfDayDisplay partOfDayDisplay;
-
-    SwipeRefreshLayout swipeRefreshLayout;
     Context mainContext;
+
+    private TabController tabController;
 
     public WednesdayTab(Context context, int position){
         dayId = position;
@@ -37,15 +34,12 @@ public class WednesdayTab extends Fragment implements SwipeRefreshLayout.OnRefre
             @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.wednesday, container, false);
-        setTitle(root,dayId);
-        LayoutInflater ltInflater = getLayoutInflater();
-        partOfDayDisplay = getDisplay(ltInflater,root);
-
-        swipeRefreshLayout = root.findViewById(R.id.swipe_layout);
-        swipeRefreshLayout.setOnRefreshListener(this);
+        tabController = new TabController(this,root);
+        tabController.setTitle(dayId);
+        tabController.configureSwipe(this);
 
         if(!DataBase.isNotLoaded())
-            generateData(partOfDayDisplay,getContext(),dayId);
+            tabController.generateData(dayId);
         Fragments.fragments.add(this);
         return root;
     }
@@ -54,8 +48,8 @@ public class WednesdayTab extends Fragment implements SwipeRefreshLayout.OnRefre
     public void onRefresh() {
         new Handler().postDelayed(() -> {
             try{
-                refresh(partOfDayDisplay,getContext(),dayId);
-                swipeRefreshLayout.setRefreshing(false);
+                tabController.refresh();
+                tabController.generateData(dayId);
             } catch (Exception e) {
                 Toast.makeText(getContext(), e.getLocalizedMessage(),
                         Toast.LENGTH_LONG).show();
