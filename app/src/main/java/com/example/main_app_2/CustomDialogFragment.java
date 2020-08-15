@@ -31,16 +31,14 @@ public class CustomDialogFragment extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        root =inflater.inflate(R.layout.dialog_fragment, null);
+        root = inflater.inflate(R.layout.dialog_fragment, null);
 
-        Bundle bundle=getArguments();
-        numberOfGroups=bundle.getIntegerArrayList("list");
+        Bundle bundle = getArguments();
+        numberOfGroups = bundle.getIntegerArrayList("list");
 
-        builder .setView(root)
-                .setPositiveButton(R.string.enter_button, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        //don't touch
-                    }
+        builder.setView(root)
+                .setPositiveButton(R.string.enter_button, (dialog, id) -> {
+                    //don't touch
                 });
         setCancelable(false);
         return builder.create();
@@ -52,36 +50,27 @@ public class CustomDialogFragment extends DialogFragment {
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
-        final AlertDialog d = (AlertDialog)getDialog();
-        if(d != null)
-        {
+        final AlertDialog d = (AlertDialog) getDialog();
+        if (d != null) {
             Button positiveButton = d.getButton(Dialog.BUTTON_POSITIVE);
-            positiveButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int group, course;
-                   try {
-                       course = Integer.parseInt((((EditText) root.findViewById(R.id.course_id)).getText().toString()));
-                       group = Integer.parseInt((((EditText) root.findViewById(R.id.group_id)).getText().toString()));
-                       DataBase.setCourseAndGroupInfo(course,group);
-                       DataBase.data = Requester.makeRequest(course,group);
-                       if(DataBase.data == null)
-                           throw new Exception();
-                       Fragments.fragmentsUpdate();
-                       d.dismiss();
-                   } catch (Exception e) {
-                       Toast.makeText(getContext(), "Нет такой группы", Toast.LENGTH_LONG).show();
-                   }
+            positiveButton.setOnClickListener(v -> {
+                int group, course;
+                try {
+                    course = Integer.parseInt((((EditText) root.findViewById(R.id.course_id)).getText().toString()));
+                    group = Integer.parseInt((((EditText) root.findViewById(R.id.group_id)).getText().toString()));
+                    DataBase.loadCurrentData(getContext(), course, group);
+                    if (DataBase.isNotLoaded())
+                         throw new Exception();
+                    Fragments.fragmentsUpdate();
+                    d.dismiss();
+                } catch (Exception e) {
+                    Toast.makeText(getContext(), "Нет такой группы", Toast.LENGTH_LONG).show();
                 }
             });
         }
     }
-
-
-
 
 
 }
