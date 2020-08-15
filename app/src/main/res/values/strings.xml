@@ -12,6 +12,9 @@
     <string name="reply_title_group">Ваша группа</string>
     <string name="enter_button">sign in</string>
 
+    <string name="rest_time_title">Перерыв</string>
+    <string name="refresh_error_message">Ошибка соединения; попробуйте позже</string>
+
     <!-- Sync Preferences -->
     <string name="sync_title">Темная тема</string>
     <string name="attachment_title">Download incoming attachments</string>
