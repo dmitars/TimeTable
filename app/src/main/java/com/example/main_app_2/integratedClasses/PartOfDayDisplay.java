@@ -45,4 +45,9 @@ public class PartOfDayDisplay {
         return item;
     }
 
+    public void clear(){
+        leftLayout.removeAllViews();
+        rightLayout.removeAllViews();
+    }
+
 }
