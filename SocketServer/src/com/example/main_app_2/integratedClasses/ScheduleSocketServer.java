@@ -32,20 +32,22 @@ public class ScheduleSocketServer
     private void scheduleResponder(Message sentMsg,
                                    ObjectOutputStream oos)
             throws IOException {
-        Map<DayOfWeek, List<Lesson>> lessons;
         try {
             int[] courseGroup = parseSentMessage(sentMsg);
-            int course = courseGroup[0];
-            int group = courseGroup[1];
-            checkGroup(course, group);
-            lessons = ScheduleInfo.getInstance().getLessonsOfGroup(course, group);
+            Map<DayOfWeek, List<Lesson>> lessons = getLessonsWithCourseAndGroup(courseGroup);
+            String jsonLessons = getJson(lessons);
+            Message response = new Message(MessageType.SEND_SCHEDULE, jsonLessons);
+            oos.writeObject(response);
         } catch (Exception e) {
             errorResponder(oos, e.getMessage());
-            return;
         }
+    }
 
-        Message response = new Message(MessageType.SEND_SCHEDULE, lessons);
-        oos.writeObject(response);
+    private Map<DayOfWeek, List<Lesson>> getLessonsWithCourseAndGroup(int[]courseGroup)throws Exception{
+        int course = courseGroup[0];
+        int group = courseGroup[1];
+        checkGroup(course, group);
+        return ScheduleInfo.getInstance().getLessonsOfGroup(course, group);
     }
 
     private int[] parseSentMessage(Message sentMsg) throws Exception {
@@ -65,6 +67,13 @@ public class ScheduleSocketServer
         if (!ScheduleInfo.getInstance().isGroupPresent(course, group)) {
             throw new Exception("You sent an incorrect group!");
         }
+    }
+
+    private String getJson(Object object) throws IOException {
+        StringWriter writer = new StringWriter();
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.writeValue(writer,object);
+        return writer.toString();
     }
 
     @Override
