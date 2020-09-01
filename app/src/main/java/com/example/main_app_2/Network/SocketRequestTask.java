@@ -2,10 +2,14 @@ package com.example.main_app_2.Network;
 
 import android.os.AsyncTask;
 
+import com.example.main_app_2.data_classes.Lesson;
 import com.example.main_app_2.integratedClasses.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.StringReader;
 import java.net.Socket;
 import java.util.*;
 
@@ -26,10 +30,12 @@ public class SocketRequestTask
             Message msg = new Message(MessageType.GET_SCHEDULE, new int[]{ints[0], ints[1]});
             oos.writeObject(msg);
 
+
             Message recv = (Message) ois.readObject();
             if (recv.getMessageType() == MessageType.SEND_SCHEDULE)
             {
-                answ = (Map<DayOfWeek, List<Lesson>>) recv.getContainer();
+                String jsonString = (String)recv.getContainer();
+                answ = getLessonsFromJson(jsonString);
             }
 
             socket.close();
@@ -42,5 +48,15 @@ public class SocketRequestTask
             return null;
         }
         return answ;
+    }
+
+    private Map<DayOfWeek,List<Lesson>> getLessonsFromJson(String jsonString) throws IOException {
+        StringReader reader = new StringReader(jsonString);
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        Map<DayOfWeek,List<Lesson>> lessons = new HashMap<>();
+        lessons = mapper.readValue(reader,  lessons.getClass());
+        return lessons;
     }
 }
