@@ -18,7 +18,7 @@ import com.example.main_app_2.Network.Requester;
 import com.example.main_app_2.SystemClasses.DataBase;
 import com.example.main_app_2.SystemClasses.Fragments;
 import com.example.main_app_2.integratedClasses.DayOfWeek;
-import com.example.main_app_2.integratedClasses.Lesson;
+import com.example.main_app_2.data_classes.Lesson;
 
 import java.util.List;
 import java.util.Map;
@@ -48,8 +48,6 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
-
-
     @TargetApi(26)
     public static class SettingsFragment extends PreferenceFragmentCompat {
         @Override
@@ -69,12 +67,10 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
 
-
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.settings_option_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -89,18 +85,15 @@ public class SettingsActivity extends AppCompatActivity {
                         tempGroup = DataBase.getGroup();
                     if(tempCourse == 0)
                         tempCourse = DataBase.getCourse();
-                    Map<DayOfWeek, List<Lesson>>data = Requester.makeRequest(tempCourse,tempGroup);
-                    if(data!=null)
-                    {
-                        DataBase.data = data;
-                        DataBase.setCourseAndGroupInfo(tempCourse,tempGroup);
+                    try {
+                        DataBase.loadCurrentData(getApplicationContext(), tempCourse, tempGroup);
                         Fragments.fragmentsUpdate();
                         Toast.makeText(getApplicationContext(),"Данные изменены",
                                 Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
-
-
                 /*Toast.makeText(getApplicationContext(),"menu save button was pressed",Toast.LENGTH_LONG).show();*/
             default:
                 return super.onOptionsItemSelected(item);

@@ -1,19 +1,19 @@
-package com.example.main_app_2.integratedClasses;
+package com.example.main_app_2.data_classes;
 import android.annotation.TargetApi;
+
+import com.example.main_app_2.R;
+import com.example.main_app_2.integratedClasses.DayOfWeek;
 
 import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.Objects;
 
 @TargetApi(26)
-public class Lesson
+public class Lesson extends PartOfDay
 	implements Serializable
 {
 	private final int course;
 	private final int group;
-	private final String name;
-	private final LocalTime start;
-	private final int lengthInMinutes;
 	private final String teacher;
 	private final String room;
 	private final String type;
@@ -23,11 +23,9 @@ public class Lesson
 				  LocalTime start, int lengthInMinutes, String teacher,
 				  String room, DayOfWeek dayOfWeek)
 	{
+		super(name,start,lengthInMinutes);
 		this.course = course;
 		this.group = group;
-		this.name = name;
-		this.start = start;
-		this.lengthInMinutes = lengthInMinutes;
 		this.teacher = teacher;
 		this.room = room;
 		this.type = type;
@@ -42,21 +40,6 @@ public class Lesson
 	public int getGroup()
 	{
 		return group;
-	}
-
-	public String getName()
-	{
-		return name;
-	}
-
-	public LocalTime getStart()
-	{
-		return start;
-	}
-
-	public int getLengthInMinutes()
-	{
-		return lengthInMinutes;
 	}
 
 	public String getTeacher()
@@ -89,8 +72,8 @@ public class Lesson
 							 "Аудитория: %s",
 							 course, group, name, type,
 							 dayOfWeek.toString(),
-							 start.toString(),
-							 start.plusMinutes(lengthInMinutes).toString(),
+							 startTime.toString(),
+							 startTime.plusMinutes(lengthInMinutes).toString(),
 							 teacher, room);
 	}
 
@@ -122,8 +105,23 @@ public class Lesson
 	public int hashCode()
 	{
 		return Objects.hash(course, group, name,
-							start, lengthInMinutes,
+							startTime, lengthInMinutes,
 							teacher, room, type,
 							dayOfWeek);
+	}
+
+	@Override
+	void setBackgroundResource() {
+		backgroundResource = R.drawable.back;
+	}
+
+	@Override
+	public String getFirstDetailedData() {
+		return "К. "+getRoom();
+	}
+
+	@Override
+	public String getSecondDetailedData() {
+		return getTeacher();
 	}
 }
